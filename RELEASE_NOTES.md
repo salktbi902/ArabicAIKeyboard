@@ -13,6 +13,16 @@ This document covers the current major version. See older versions for older rel
 
 
 
+## 10.2.1
+
+This version improves the license bundle validation.
+
+### 🤝 Licenses
+
+* `License` now validates the current bundle more reliably.
+
+
+
 ## 10.2
 
 This version makes it possible to perform dictation directly within the keyboard, with an automatic roundtrip to the app only when needed.
