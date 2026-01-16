@@ -5,6 +5,8 @@
 //  Created by Daniel Saidi on 2024-11-24.
 //  Copyright © 2024-2025 Daniel Saidi. All rights reserved.
 //
+//  Modified for Arabic AI Keyboard Enhancement
+//
 
 import SwiftUI
 import KeyboardKit
@@ -31,6 +33,10 @@ struct DemoKeyboardMenu: View {
     @EnvironmentObject var feedbackContext: FeedbackContext
     @EnvironmentObject var keyboardContext: KeyboardContext
     @EnvironmentObject var themeContext: KeyboardThemeContext
+    
+    @State private var showAIMenu = false
+    @StateObject private var geminiService = GeminiService.shared
+    @State private var processingCommand: AICommand?
 
     var body: some View {
         ScrollView(.vertical) {
@@ -42,6 +48,13 @@ struct DemoKeyboardMenu: View {
             .padding(.bottom, 10)
             .background(Color.clearInteractable)            // Needed in keyboard extensions
         }
+        .sheet(isPresented: $showAIMenu) {
+            AIMenu(
+                actionHandler: actionHandler,
+                isPresented: $showAIMenu
+            )
+            .presentationDetents([.medium, .large])
+        }
     }
 }
 
@@ -49,6 +62,11 @@ extension DemoKeyboardMenu {
 
     @ViewBuilder
     func menuContent() -> some View {
+        
+        // ⭐ قسم الذكاء الاصطناعي - جديد
+        aiSection
+        
+        // القائمة الأصلية
         menuItem(
             title: "Menu.Settings",
             icon: .keyboardSettings,
@@ -121,6 +139,175 @@ extension DemoKeyboardMenu {
             iconTint: .primary,
             action: {}
         )
+    }
+    
+    // MARK: - AI Section
+    
+    /// قسم الذكاء الاصطناعي
+    @ViewBuilder
+    var aiSection: some View {
+        // زر فتح قائمة AI الكاملة
+        aiMenuItem(
+            title: "🤖 الذكاء الاصطناعي",
+            icon: .init(systemName: "brain"),
+            tint: .purple,
+            action: { showAIMenu = true }
+        )
+        
+        // الأوامر السريعة
+        aiCommandItem(.proofread)
+        aiCommandItem(.translate)
+        aiCommandItem(.diacritics)
+        aiCommandItem(.improve)
+    }
+    
+    /// عنصر أمر AI
+    func aiCommandItem(_ command: AICommand) -> some View {
+        Button {
+            withAnimation {
+                isToolbarToggled.toggle()
+                executeAICommand(command)
+            }
+        } label: {
+            VStack(alignment: .center, spacing: 10) {
+                ZStack {
+                    if processingCommand == command {
+                        ProgressView()
+                            .scaleEffect(0.8)
+                    } else {
+                        Image(systemName: command.icon)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 25)
+                    }
+                }
+                .frame(height: 25)
+                
+                Text(command.titleAr)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .lineLimit(1)
+            }
+            .padding(5)
+            .font(.footnote)
+        }
+        .disabled(processingCommand != nil)
+        .opacity(processingCommand == command ? 0.6 : 1.0)
+        .symbolVariant(.fill)
+        .symbolRenderingMode(.multicolor)
+        .buttonStyle(.bordered)
+        .tint(commandColor(command).gradient)
+        .background(Color.primary.colorInvert())
+        .modify { content in
+            if #available(iOS 26, *) {
+                content.clipShape(.capsule)
+            } else {
+                content.clipShape(.rect(cornerRadius: 20))
+            }
+        }
+        .shadow(color: .black.opacity(0.3), radius: 0, x: 0, y: 1)
+    }
+    
+    /// لون الأمر
+    func commandColor(_ command: AICommand) -> Color {
+        switch command {
+        case .proofread: return .blue
+        case .translate: return .green
+        case .diacritics: return .purple
+        case .improve: return .orange
+        case .summarize: return .indigo
+        case .expand: return .teal
+        case .formal: return .gray
+        case .casual: return .pink
+        case .reply: return .cyan
+        case .complete: return .mint
+        }
+    }
+    
+    /// تنفيذ أمر AI
+    func executeAICommand(_ command: AICommand) {
+        guard let proxy = keyboardContext.textDocumentProxy else { return }
+        
+        // الحصول على النص
+        var text = ""
+        if let selected = proxy.selectedText, !selected.isEmpty {
+            text = selected
+        } else if let before = proxy.documentContextBeforeInput {
+            let separators = CharacterSet(charactersIn: ".!?؟。\n")
+            let sentences = before.components(separatedBy: separators)
+            if let last = sentences.last?.trimmingCharacters(in: .whitespaces), !last.isEmpty {
+                text = last
+            } else {
+                text = before
+            }
+        }
+        
+        guard !text.isEmpty else { return }
+        
+        processingCommand = command
+        
+        Task {
+            if let result = await geminiService.process(text, command: command) {
+                await MainActor.run {
+                    // حذف النص القديم
+                    if let before = proxy.documentContextBeforeInput {
+                        let separators = CharacterSet(charactersIn: ".!?؟。\n")
+                        let sentences = before.components(separatedBy: separators)
+                        if let last = sentences.last?.trimmingCharacters(in: .whitespaces), !last.isEmpty {
+                            for _ in 0..<last.count {
+                                proxy.deleteBackward()
+                            }
+                        }
+                    }
+                    // إدراج النتيجة
+                    proxy.insertText(result)
+                }
+            }
+            
+            await MainActor.run {
+                processingCommand = nil
+            }
+        }
+    }
+    
+    /// عنصر قائمة AI
+    func aiMenuItem(
+        title: String,
+        icon: Image,
+        tint: Color,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button {
+            withAnimation {
+                isToolbarToggled.toggle()
+                action()
+            }
+        } label: {
+            VStack(alignment: .center, spacing: 10) {
+                menuItemIcon(.keyboardSettings)
+                    .opacity(0)
+                    .overlay(menuItemIcon(icon))
+                    .font(.title)
+                    .foregroundStyle(tint)
+                Text(title)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .lineLimit(1)
+            }
+            .padding(5)
+            .font(.footnote)
+        }
+        .symbolVariant(.fill)
+        .symbolRenderingMode(.multicolor)
+        .buttonStyle(.bordered)
+        .tint(tint.gradient)
+        .background(Color.primary.colorInvert())
+        .modify { content in
+            if #available(iOS 26, *) {
+                content.clipShape(.capsule)
+            } else {
+                content.clipShape(.rect(cornerRadius: 20))
+            }
+        }
+        .shadow(color: .black.opacity(0.3), radius: 0, x: 0, y: 1)
     }
 
     func menuItem(

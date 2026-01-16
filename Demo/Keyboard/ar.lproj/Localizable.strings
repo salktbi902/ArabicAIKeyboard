@@ -1,0 +1,61 @@
+/* 
+  Localizable.strings (Arabic)
+  Arabic AI Keyboard
+  
+  الترجمة العربية لواجهة لوحة المفاتيح
+*/
+
+// MARK: - Menu Items
+"Menu.Settings" = "الإعدادات";
+"Menu.Languages" = "اللغات";
+"Menu.Themes" = "السمات";
+"Menu.Dictation" = "الإملاء";
+"Menu.TextInput" = "إدخال نص";
+"Menu.ReadFullDocument" = "قراءة المستند";
+"Menu.HostApp" = "التطبيق المضيف";
+"Menu.OpenApp" = "فتح التطبيق";
+"Menu.OpenWebsite" = "فتح الموقع";
+"Menu.CloseMenu" = "إغلاق القائمة";
+
+// MARK: - AI Commands
+"AI.Title" = "الذكاء الاصطناعي";
+"AI.Proofread" = "تدقيق";
+"AI.Translate" = "ترجمة";
+"AI.Diacritics" = "تشكيل";
+"AI.Improve" = "تحسين";
+"AI.Summarize" = "تلخيص";
+"AI.Expand" = "توسيع";
+"AI.Formal" = "رسمي";
+"AI.Casual" = "عامي";
+"AI.Reply" = "رد ذكي";
+"AI.Complete" = "إكمال";
+
+// MARK: - AI Status
+"AI.Processing" = "جارٍ المعالجة...";
+"AI.Success" = "تم بنجاح";
+"AI.Error" = "حدث خطأ";
+"AI.EmptyText" = "النص فارغ";
+
+// MARK: - Buttons
+"Button.Done" = "تم";
+"Button.Cancel" = "إلغاء";
+"Button.Copy" = "نسخ";
+"Button.Insert" = "إدراج";
+"Button.Retry" = "إعادة المحاولة";
+
+// MARK: - Settings
+"Settings.Title" = "إعدادات لوحة المفاتيح";
+"Settings.Language" = "اللغة";
+"Settings.Theme" = "السمة";
+"Settings.Haptics" = "الاهتزاز";
+"Settings.Sound" = "الصوت";
+"Settings.AI" = "الذكاء الاصطناعي";
+
+// MARK: - Keyboard
+"Keyboard.Space" = "مسافة";
+"Keyboard.Return" = "إدخال";
+"Keyboard.Delete" = "حذف";
+"Keyboard.Shift" = "تبديل";
+"Keyboard.Numbers" = "أرقام";
+"Keyboard.Symbols" = "رموز";
+"Keyboard.Letters" = "حروف";

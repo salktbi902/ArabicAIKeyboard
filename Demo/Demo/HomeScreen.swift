@@ -5,6 +5,8 @@
 //  Created by Daniel Saidi on 2021-02-11.
 //  Copyright © 2021-2025 Daniel Saidi. All rights reserved.
 //
+//  Modified for Arabic AI Keyboard Enhancement
+//
 
 import KeyboardKit
 import SwiftUI
@@ -39,18 +41,40 @@ struct HomeScreen: View {
                 app: app,
                 appIcon: Image(.icon),
                 header: {
-                    Text(
-"""
-OBS! This demo isn't code signed and therefore can't sync data with its keyboard. This means that dictation will not work.
-"""
-                    )
-                    .listRowBackground(Color.yellow)
-                    .multilineTextAlignment(.center)
+                    // قسم الترحيب بالعربية
+                    VStack(spacing: 12) {
+                        Text("🤖 لوحة المفاتيح العربية الذكية")
+                            .font(.headline)
+                            .multilineTextAlignment(.center)
+                        
+                        Text("مدعومة بالذكاء الاصطناعي من Google Gemini")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
+                    }
+                    .listRowBackground(Color.blue.opacity(0.1))
+                    .padding(.vertical, 8)
                 },
                 footer: {
-                    Section("Section.TextFields") {
-                        TextField("TextField.Plain", text: $text)
+                    // قسم ميزات AI
+                    Section("🤖 ميزات الذكاء الاصطناعي") {
+                        aiFeatureRow(icon: "eye", title: "تدقيق لغوي", description: "تصحيح الأخطاء الإملائية والنحوية", color: .blue)
+                        aiFeatureRow(icon: "globe", title: "ترجمة فورية", description: "ترجمة بين العربية والإنجليزية", color: .green)
+                        aiFeatureRow(icon: "textformat", title: "تشكيل النص", description: "إضافة الحركات للنص العربي", color: .purple)
+                        aiFeatureRow(icon: "wand.and.stars", title: "تحسين الأسلوب", description: "تحسين جودة الكتابة", color: .orange)
+                        aiFeatureRow(icon: "doc.text", title: "تلخيص", description: "تلخيص النصوص الطويلة", color: .indigo)
+                        aiFeatureRow(icon: "arrow.up.left.and.arrow.down.right", title: "توسيع", description: "إضافة تفاصيل للنص", color: .teal)
+                        aiFeatureRow(icon: "briefcase", title: "صياغة رسمية", description: "تحويل لأسلوب رسمي", color: .gray)
+                        aiFeatureRow(icon: "face.smiling", title: "صياغة عامية", description: "تحويل لأسلوب ودي", color: .pink)
+                        aiFeatureRow(icon: "arrowshape.turn.up.left", title: "رد ذكي", description: "اقتراح ردود مناسبة", color: .cyan)
+                        aiFeatureRow(icon: "text.badge.plus", title: "إكمال تلقائي", description: "إكمال الجمل بذكاء", color: .mint)
+                    }
+                    
+                    // قسم حقول الاختبار
+                    Section("جرّب لوحة المفاتيح") {
+                        TextField("اكتب هنا بالعربية...", text: $text)
                             .keyboardType(.default)
+                            .environment(\.layoutDirection, .rightToLeft)
                         TextField("TextField.Email", text: $textEmail)
                             .keyboardType(.emailAddress)
                         TextField("TextField.NumberPad", text: $textNumberPad)
@@ -59,13 +83,25 @@ OBS! This demo isn't code signed and therefore can't sync data with its keyboard
                             .keyboardType(.URL)
                         TextField("TextField.WebSearch", text: $textWebSearch)
                             .keyboardType(.webSearch)
-                        TextField("TextField.Multiline", text: $textMultiline, axis: .vertical)
+                        TextField("نص متعدد الأسطر...", text: $textMultiline, axis: .vertical)
                             .lineLimit(4, reservesSpace: true)
                             .keyboardType(.default)
+                            .environment(\.layoutDirection, .rightToLeft)
+                    }
+                    
+                    // تعليمات الاستخدام
+                    Section("💡 كيفية الاستخدام") {
+                        VStack(alignment: .leading, spacing: 8) {
+                            instructionRow(number: "1", text: "اكتب النص المراد معالجته")
+                            instructionRow(number: "2", text: "اضغط على أحد أزرار AI في شريط الأدوات")
+                            instructionRow(number: "3", text: "انتظر المعالجة (يظهر مؤشر دوران)")
+                            instructionRow(number: "4", text: "سيتم استبدال النص بالنتيجة تلقائياً")
+                        }
+                        .padding(.vertical, 4)
                     }
                 }
             )
-            .navigationTitle(app.name)
+            .navigationTitle("Arabic AI Keyboard")
         }
         .keyboardAppHomeScreenStyle(.init(
             appIconSize: 120,
@@ -74,7 +110,7 @@ OBS! This demo isn't code signed and therefore can't sync data with its keyboard
         .keyboardAppHomeScreenVisibility(.init(
             settingsSectionFonts: true,
             settingsSectionThemes: true,
-            settingsSectionExperiments: true,
+            settingsSectionExperiments: true
         ))
         .keyboardDictation(
             speechRecognizer: .standard
@@ -82,6 +118,8 @@ OBS! This demo isn't code signed and therefore can't sync data with its keyboard
         .navigationViewStyle(.stack)
     }
 }
+
+// MARK: - Helper Views
 
 extension HomeScreen {
     
@@ -95,9 +133,46 @@ extension HomeScreen {
             }
         )
     }
+    
+    /// صف ميزة AI
+    func aiFeatureRow(icon: String, title: String, description: String, color: Color) -> some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.title2)
+                .foregroundColor(color)
+                .frame(width: 30)
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                Text(description)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+        }
+    }
+    
+    /// صف تعليمات
+    func instructionRow(number: String, text: String) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Text(number)
+                .font(.caption)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .frame(width: 20, height: 20)
+                .background(Color.blue)
+                .clipShape(Circle())
+            
+            Text(text)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+        }
+    }
 }
 
 #Preview {
-    
     HomeScreen()
 }

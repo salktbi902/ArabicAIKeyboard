@@ -5,6 +5,8 @@
 //  Created by Daniel Saidi on 2023-02-13.
 //  Copyright © 2023-2025 Daniel Saidi. All rights reserved.
 //
+//  Modified for Arabic AI Keyboard Enhancement
+//
 
 import KeyboardKit
 import SwiftUI
@@ -47,6 +49,7 @@ class KeyboardViewController: KeyboardInputViewController {
             case .success:
                 self?.setupDemoServices()
                 self?.setupDemoState()
+                self?.setupArabicLocale()
             case .failure(let error):
                 print(error)
             }
@@ -106,5 +109,25 @@ private extension KeyboardViewController {
         feedback.registerCustomFeedback(.haptic(.selectionChanged, for: .repeat, on: .rocket))
         feedback.registerCustomFeedback(.audio(.rocketFuse, for: .press, on: .rocket))
         feedback.registerCustomFeedback(.audio(.rocketLaunch, for: .release, on: .rocket))
+    }
+    
+    /// 🌍 إعداد اللغة العربية كلغة أساسية
+    func setupArabicLocale() {
+        // تعيين اللغة العربية كلغة افتراضية
+        let arabicLocale = Locale(identifier: "ar")
+        
+        // التحقق من دعم اللغة العربية
+        if state.keyboardContext.locales.contains(where: { $0.identifier.hasPrefix("ar") }) {
+            state.keyboardContext.locale = arabicLocale
+        }
+        
+        // تفعيل اتجاه RTL
+        state.keyboardContext.localePresentationLocale = arabicLocale
+        
+        // تفعيل ردود الفعل الاهتزازية للكتابة
+        state.feedbackContext.isHapticFeedbackEnabled = true
+        state.feedbackContext.isAudioFeedbackEnabled = true
+        
+        NSLog("✅ Arabic locale configured successfully")
     }
 }

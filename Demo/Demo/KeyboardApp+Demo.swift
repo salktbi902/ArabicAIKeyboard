@@ -5,6 +5,8 @@
 //  Created by Daniel Saidi on 2024-08-19.
 //  Copyright © 2024-2025 Daniel Saidi. All rights reserved.
 //
+//  Modified for Arabic AI Keyboard Enhancement
+//
 
 #if IS_KEYBOARDKIT
 import KeyboardKit
@@ -30,17 +32,38 @@ extension KeyboardApp {
     /// See `DemoApp.swift` for more info about the demo app.
     static var keyboardKitDemo: KeyboardApp {
         .init(
-            name: "KeyboardKit Demo",
-            // licenseKey: "299B33C6-061C-4285-8189-90525BCAF098",  // Sets up KeyboardKit Pro!
-            appGroupId: "group.com.keyboardkit.demo",               // Sets up App Group data sync
-            locales: .keyboardKitSupported,                         // Sets up the enabled locales
-            autocomplete: .init(                                    // Sets up custom autocomplete
-                // nextWordPredictionRequest: .claude(apiKey: "")   // Sets up AI-based prediction (add your own key)
+            name: "Arabic AI Keyboard",
+            licenseKey: "CC58DE28-A7424BC5-AE833050-EF7D988B",   // KeyboardKit Pro License
+            appGroupId: "group.com.arabicaikeyboard.app",        // App Group for data sync
+            locales: .arabicFirst,                               // Arabic as primary locale
+            autocomplete: .init(
+                // nextWordPredictionRequest: .claude(apiKey: "")
             ),
             deepLinks: .init(
-                app: "kkdemo://"                                    // Defines how to open the app
-                // dictation: "kkdemo://dictation"                  // You can customize any default deep link
+                app: "arabicai://"                               // Deep link scheme
             )
         )
+    }
+}
+
+// MARK: - Locale Extensions
+
+extension Array where Element == Locale {
+    
+    /// اللغات المدعومة مع العربية كأولوية
+    static var arabicFirst: [Locale] {
+        [
+            Locale(identifier: "ar"),           // العربية
+            Locale(identifier: "ar_SA"),        // العربية (السعودية)
+            Locale(identifier: "ar_AE"),        // العربية (الإمارات)
+            Locale(identifier: "ar_EG"),        // العربية (مصر)
+            Locale(identifier: "en"),           // الإنجليزية
+            Locale(identifier: "en_US"),        // الإنجليزية (أمريكا)
+            Locale(identifier: "en_GB"),        // الإنجليزية (بريطانيا)
+            Locale(identifier: "fr"),           // الفرنسية
+            Locale(identifier: "tr"),           // التركية
+            Locale(identifier: "ur"),           // الأردية
+            Locale(identifier: "fa"),           // الفارسية
+        ]
     }
 }
