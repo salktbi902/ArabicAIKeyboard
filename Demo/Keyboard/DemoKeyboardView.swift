@@ -5,15 +5,14 @@
 //  Created by Daniel Saidi on 2022-02-04.
 //  Copyright © 2022-2025 Daniel Saidi. All rights reserved.
 //
+//  ✨ Modified for Arabic AI Keyboard
+//
 
 import KeyboardKit
 import SwiftUI
 
 /// This demo-specific keyboard view sets up a `KeyboardView`
-/// and customizes it with Pro features.
-///
-/// This keyboard view replaces the default top toolbar with
-/// a toggle toolbar that has an alternate menu.
+/// and customizes it with Pro features + AI Toolbar.
 struct DemoKeyboardView: View {
 
     var services: Keyboard.Services
@@ -27,51 +26,58 @@ struct DemoKeyboardView: View {
     @State var activeSheet: DemoSheet?
     @State var isTextInputActive = false
     @State var theme: KeyboardTheme?
+    @State var showAIToolbar = true  // ✨ إظهار شريط AI
 
     var keyboardContext: KeyboardContext { state.keyboardContext }
 
     var body: some View {
-        KeyboardView(
-            layout: demoLayout,
-            services: services,
-            buttonContent: { $0.view },                     // $0.view uses the default view.
-            buttonView: {
-                $0.view.opacity(isToolbarToggled ? 0 : 1)   // Hide keys when the toolbar is toggled
-            },
-            collapsedView: { $0.view },
-            emojiKeyboard: { $0.view },
-            toolbar: { params in                            // All view builders have parameters
-                if isTextInputActive {
-                    DemoTextInputToolbar(
-                        isTextInputActive: $isTextInputActive
-                    )
-                } else {
-                    DemoToolbar(
-                        services: services,
-                        toolbar: params.view,               // Use the original toolbar
-                        isTextInputActive: $isTextInputActive,
-                        isToolbarToggled: $isToolbarToggled
-                    )
-                }
+        VStack(spacing: 0) {
+            // ✨ شريط أدوات AI في الأعلى
+            if showAIToolbar && !isToolbarToggled {
+                AIToolbar()
+                    .environmentObject(state.keyboardContext)
             }
-        )
-        .overlay(menuGrid)
-        .animation(.bouncy, value: isToolbarToggled)
+            
+            // لوحة المفاتيح الأصلية
+            KeyboardView(
+                layout: demoLayout,
+                services: services,
+                buttonContent: { $0.view },
+                buttonView: {
+                    $0.view.opacity(isToolbarToggled ? 0 : 1)
+                },
+                collapsedView: { $0.view },
+                emojiKeyboard: { $0.view },
+                toolbar: { params in
+                    if isTextInputActive {
+                        DemoTextInputToolbar(
+                            isTextInputActive: $isTextInputActive
+                        )
+                    } else {
+                        DemoToolbar(
+                            services: services,
+                            toolbar: params.view,
+                            isTextInputActive: $isTextInputActive,
+                            isToolbarToggled: $isToolbarToggled
+                        )
+                    }
+                }
+            )
+            .overlay(menuGrid)
+            .animation(.bouncy, value: isToolbarToggled)
+        }
 
-        // 💡 Customize callout actions in any way you want.
-        .keyboardCalloutActions { params in                 // Apply custom actions to "K" key
+        .keyboardCalloutActions { params in
             if case .character(let char) = params.action, char == "K" {
                 return .init(characters: String("keyboardkit".reversed()))
             }
             return params.standardActions()
         }
 
-        // 💡 Apply the currently selected theme, if any.
         .keyboardTheme(
             themeContext.currentTheme
         )
 
-        // 💡 This sheet can be used to show the main menu.
         .sheet(item: $activeSheet) { sheet in
             NavigationStack {
                 sheetContent
@@ -90,7 +96,6 @@ struct DemoKeyboardView: View {
 
 private extension DemoKeyboardView {
 
-    // 💡 Setup a custom keyboard layout
     var demoLayout: KeyboardLayout {
         NSLog("Creating a custom layout")
         var layout = KeyboardLayout.standard(for: keyboardContext)
@@ -101,7 +106,6 @@ private extension DemoKeyboardView {
         return layout
     }
 
-    // 💡 This menu view is shown when the menu is activated.
     @ViewBuilder var menuGrid: some View {
         if isToolbarToggled {
             DemoKeyboardMenu(
@@ -110,13 +114,12 @@ private extension DemoKeyboardView {
                 isToolbarToggled: $isToolbarToggled,
                 sheet: $activeSheet
             )
-            .padding(.top, 55)  // Give room for the toolbar
+            .padding(.top, 55)
             .padding(.horizontal, 10)
             .transition(.move(edge: .bottom))
         }
     }
 
-    // 💡 This view builder creates misc sheet content views.
     @ViewBuilder var sheetContent: some View {
         switch activeSheet {
         case .fullDocumentReader:

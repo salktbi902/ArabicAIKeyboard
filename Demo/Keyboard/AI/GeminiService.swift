@@ -1,29 +1,29 @@
 //
 //  GeminiService.swift
-//  ArabicAIKeyboard
+//  Arabic AI Keyboard
 //
-//  خدمة التفاعل مع Google Gemini API
-//  Created for Arabic AI Keyboard Enhancement
+//  ✨ خدمة الذكاء الاصطناعي - Google Gemini API
 //
 
 import Foundation
 
-/// أنواع الأوامر الذكية المتاحة
+// MARK: - أوامر الذكاء الاصطناعي
+
 enum AICommand: String, CaseIterable, Identifiable {
-    case proofread = "proofread"
-    case translate = "translate"
-    case diacritics = "diacritics"
-    case improve = "improve"
-    case summarize = "summarize"
-    case expand = "expand"
-    case formal = "formal"
-    case casual = "casual"
-    case reply = "reply"
-    case complete = "complete"
+    case proofread = "proofread"      // تدقيق لغوي
+    case translate = "translate"      // ترجمة
+    case diacritics = "diacritics"    // تشكيل
+    case improve = "improve"          // تحسين
+    case summarize = "summarize"      // تلخيص
+    case expand = "expand"            // توسيع
+    case formal = "formal"            // رسمي
+    case casual = "casual"            // عامي
+    case reply = "reply"              // رد ذكي
+    case complete = "complete"        // إكمال
     
     var id: String { rawValue }
     
-    /// اسم الأمر بالعربية
+    /// الاسم بالعربي
     var titleAr: String {
         switch self {
         case .proofread: return "تدقيق"
@@ -34,12 +34,12 @@ enum AICommand: String, CaseIterable, Identifiable {
         case .expand: return "توسيع"
         case .formal: return "رسمي"
         case .casual: return "عامي"
-        case .reply: return "رد ذكي"
+        case .reply: return "رد"
         case .complete: return "إكمال"
         }
     }
     
-    /// أيقونة SF Symbol
+    /// الأيقونة
     var icon: String {
         switch self {
         case .proofread: return "eye"
@@ -55,7 +55,7 @@ enum AICommand: String, CaseIterable, Identifiable {
         }
     }
     
-    /// لون الأيقونة
+    /// اللون
     var color: String {
         switch self {
         case .proofread: return "blue"
@@ -71,185 +71,157 @@ enum AICommand: String, CaseIterable, Identifiable {
         }
     }
     
-    /// الأمر البرمجي (System Prompt)
+    /// الأمر للذكاء الاصطناعي
     var systemPrompt: String {
         switch self {
         case .proofread:
             return """
-            أنت مدقق لغوي محترف للغة العربية. مهمتك:
-            1. تصحيح الأخطاء الإملائية والنحوية
-            2. تحسين علامات الترقيم
-            3. الحفاظ على المعنى الأصلي
-            أرجع النص المصحح فقط بدون أي شرح.
+            أنت مدقق لغوي عربي محترف. صحح الأخطاء الإملائية والنحوية في النص التالي.
+            أعد النص المصحح فقط بدون أي شرح أو تعليق.
             """
         case .translate:
             return """
-            أنت مترجم محترف. مهمتك:
-            1. إذا كان النص بالعربية، ترجمه إلى الإنجليزية
-            2. إذا كان النص بالإنجليزية، ترجمه إلى العربية
-            3. حافظ على أسلوب ونبرة النص
-            أرجع الترجمة فقط بدون أي شرح.
+            أنت مترجم محترف. إذا كان النص بالعربية، ترجمه للإنجليزية. إذا كان بالإنجليزية، ترجمه للعربية.
+            أعد الترجمة فقط بدون أي شرح.
             """
         case .diacritics:
             return """
-            أنت خبير في اللغة العربية. مهمتك:
-            1. إضافة التشكيل الكامل للنص العربي (الفتحة، الضمة، الكسرة، السكون، الشدة، التنوين)
-            2. التشكيل يجب أن يكون صحيحاً نحوياً وصرفياً
-            أرجع النص مشكّلاً فقط بدون أي شرح.
+            أنت خبير في اللغة العربية. أضف التشكيل الكامل (الحركات) للنص العربي التالي.
+            أعد النص مع التشكيل فقط.
             """
         case .improve:
             return """
-            أنت كاتب محترف. مهمتك:
-            1. تحسين أسلوب الكتابة
-            2. جعل النص أكثر وضوحاً وجاذبية
-            3. الحفاظ على المعنى الأصلي
-            أرجع النص المحسن فقط بدون أي شرح.
+            أنت كاتب محترف. حسّن أسلوب النص التالي ليكون أكثر وضوحاً وجمالاً.
+            أعد النص المحسّن فقط.
             """
         case .summarize:
             return """
-            أنت ملخص نصوص محترف. مهمتك:
-            1. تلخيص النص بشكل موجز ومفيد
-            2. الحفاظ على النقاط الرئيسية
-            3. استخدام نفس لغة النص
-            أرجع الملخص فقط بدون أي شرح.
+            لخّص النص التالي في جملة أو جملتين مع الحفاظ على المعنى الأساسي.
+            أعد الملخص فقط.
             """
         case .expand:
             return """
-            أنت كاتب محترف. مهمتك:
-            1. توسيع النص وإضافة تفاصيل مفيدة
-            2. الحفاظ على الفكرة الأساسية
-            3. جعل النص أكثر شمولاً
-            أرجع النص الموسع فقط بدون أي شرح.
+            وسّع النص التالي بإضافة تفاصيل ومعلومات إضافية مع الحفاظ على الموضوع.
+            أعد النص الموسّع فقط.
             """
         case .formal:
             return """
-            أنت خبير في الكتابة الرسمية. مهمتك:
-            1. تحويل النص إلى صياغة رسمية واحترافية
-            2. استخدام مفردات مناسبة للمراسلات الرسمية
-            3. الحفاظ على المعنى
-            أرجع النص الرسمي فقط بدون أي شرح.
+            حوّل النص التالي إلى أسلوب رسمي مناسب للمراسلات الرسمية والأعمال.
+            أعد النص الرسمي فقط.
             """
         case .casual:
             return """
-            أنت كاتب محتوى عصري. مهمتك:
-            1. تحويل النص إلى صياغة عامية وودية
-            2. استخدام أسلوب محادثة طبيعي
-            3. الحفاظ على المعنى
-            أرجع النص العامي فقط بدون أي شرح.
+            حوّل النص التالي إلى أسلوب ودي وغير رسمي مناسب للمحادثات اليومية.
+            أعد النص العامي فقط.
             """
         case .reply:
             return """
-            أنت مساعد ذكي. مهمتك:
-            1. اقتراح رد مناسب على الرسالة
-            2. الرد يجب أن يكون مهذباً ومناسباً للسياق
-            3. استخدام نفس لغة الرسالة
-            أرجع الرد المقترح فقط بدون أي شرح.
+            اقترح رداً مناسباً على الرسالة التالية. الرد يجب أن يكون مهذباً ومناسباً للسياق.
+            أعد الرد المقترح فقط.
             """
         case .complete:
             return """
-            أنت مساعد كتابة ذكي. مهمتك:
-            1. إكمال النص بشكل منطقي ومتسق
-            2. الحفاظ على أسلوب الكتابة
-            3. إضافة جملة أو جملتين فقط
-            أرجع النص الكامل (الأصلي + الإكمال) بدون أي شرح.
+            أكمل النص التالي بطريقة منطقية ومناسبة للسياق.
+            أعد النص المكتمل فقط.
             """
         }
     }
 }
 
-/// حالة المعالجة
-enum AIProcessingState {
-    case idle
-    case processing
-    case success(String)
-    case error(String)
-}
+// MARK: - خدمة Gemini
 
-/// خدمة Gemini للذكاء الاصطناعي
-@MainActor
 class GeminiService: ObservableObject {
     
-    /// النسخة الوحيدة (Singleton)
     static let shared = GeminiService()
     
-    /// حالة المعالجة الحالية
-    @Published var state: AIProcessingState = .idle
-    
-    /// مفتاح API
+    // ✨ مفتاح API - استبدله بمفتاحك
     private let apiKey = "AIzaSyBe-R4ISfWhh2og7YyPVDpDSxzK4357dc8"
-    
-    /// رابط API
     private let baseURL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+    
+    @Published var isProcessing = false
+    @Published var lastError: String?
     
     private init() {}
     
-    /// معالجة النص باستخدام أمر معين
+    /// معالجة النص مع أمر AI
     func process(_ text: String, command: AICommand) async -> String? {
-        guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            state = .error("النص فارغ")
-            return nil
+        await MainActor.run {
+            isProcessing = true
+            lastError = nil
         }
         
-        state = .processing
+        defer {
+            Task { @MainActor in
+                isProcessing = false
+            }
+        }
         
-        do {
-            let result = try await callGeminiAPI(text: text, systemPrompt: command.systemPrompt)
-            state = .success(result)
-            return result
-        } catch {
-            state = .error(error.localizedDescription)
+        let prompt = """
+        \(command.systemPrompt)
+        
+        النص:
+        \(text)
+        """
+        
+        guard let url = URL(string: "\(baseURL)?key=\(apiKey)") else {
+            await MainActor.run { lastError = "رابط غير صالح" }
             return nil
         }
-    }
-    
-    /// استدعاء Gemini API
-    private func callGeminiAPI(text: String, systemPrompt: String) async throws -> String {
-        let url = URL(string: "\(baseURL)?key=\(apiKey)")!
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let requestBody: [String: Any] = [
             "contents": [
                 [
                     "parts": [
-                        ["text": "\(systemPrompt)\n\nالنص:\n\(text)"]
+                        ["text": prompt]
                     ]
                 ]
             ],
             "generationConfig": [
                 "temperature": 0.7,
-                "topP": 0.95,
-                "topK": 40,
-                "maxOutputTokens": 2048
+                "maxOutputTokens": 1024
             ]
         ]
         
-        request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
-        
-        let (data, response) = try await URLSession.shared.data(for: request)
-        
-        guard let httpResponse = response as? HTTPURLResponse,
-              httpResponse.statusCode == 200 else {
-            throw NSError(domain: "GeminiAPI", code: -1, userInfo: [NSLocalizedDescriptionKey: "فشل في الاتصال بالخادم"])
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: requestBody) else {
+            await MainActor.run { lastError = "خطأ في تحويل البيانات" }
+            return nil
         }
         
-        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let candidates = json["candidates"] as? [[String: Any]],
-              let firstCandidate = candidates.first,
-              let content = firstCandidate["content"] as? [String: Any],
-              let parts = content["parts"] as? [[String: Any]],
-              let firstPart = parts.first,
-              let resultText = firstPart["text"] as? String else {
-            throw NSError(domain: "GeminiAPI", code: -2, userInfo: [NSLocalizedDescriptionKey: "استجابة غير صالحة"])
-        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+        request.timeoutInterval = 30
         
-        return resultText.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-    
-    /// إعادة تعيين الحالة
-    func reset() {
-        state = .idle
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                await MainActor.run { lastError = "استجابة غير صالحة" }
+                return nil
+            }
+            
+            guard httpResponse.statusCode == 200 else {
+                await MainActor.run { lastError = "خطأ: \(httpResponse.statusCode)" }
+                return nil
+            }
+            
+            guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                  let candidates = json["candidates"] as? [[String: Any]],
+                  let firstCandidate = candidates.first,
+                  let content = firstCandidate["content"] as? [String: Any],
+                  let parts = content["parts"] as? [[String: Any]],
+                  let firstPart = parts.first,
+                  let resultText = firstPart["text"] as? String else {
+                await MainActor.run { lastError = "خطأ في قراءة الاستجابة" }
+                return nil
+            }
+            
+            return resultText.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+        } catch {
+            await MainActor.run { lastError = error.localizedDescription }
+            return nil
+        }
     }
 }
