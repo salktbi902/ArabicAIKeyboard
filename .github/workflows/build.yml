@@ -1,0 +1,29 @@
+name: Build iOS App
+
+on:
+  push:
+      branches: [main]
+        workflow_dispatch:
+
+        jobs:
+          build:
+              runs-on: macos-14
+                  steps:
+                        - name: Checkout
+                                uses: actions/checkout@v4
+                                      - name: Select Xcode
+                                              run: sudo xcode-select -s /Applications/Xcode_15.2.app/Contents/Developer
+                                                    - name: Build App
+                                                            run: |
+                                                                      cd Demo
+                                                                                xcodebuild build -project Demo.xcodeproj -scheme Demo -destination 'generic/platform=iOS' -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+                                                                                      - name: Create IPA
+                                                                                              run: |
+                                                                                                        mkdir -p build_output/Payload
+                                                                                                                  cp -R ~/Library/Developer/Xcode/DerivedData/*/Build/Products/Release-iphoneos/*.app build_output/Payload/ 2>/dev/null || true
+                                                                                                                            cd build_output && zip -r ArabicAIKeyboard.ipa Payload
+                                                                                                                                  - name: Upload
+                                                                                                                                          uses: actions/upload-artifact@v4
+                                                                                                                                                  with:
+                                                                                                                                                            name: ArabicAIKeyboard-IPA
+                                                                                                                                                                      path: build_output/*.ipa
