@@ -26,7 +26,7 @@ struct DemoKeyboardView: View {
     @State var activeSheet: DemoSheet?
     @State var isTextInputActive = false
     @State var theme: KeyboardTheme?
-    @State var showAIToolbar = true  // ✨ إظهار شريط AI
+    @State var showAIToolbar = true
 
     var keyboardContext: KeyboardContext { state.keyboardContext }
 
@@ -34,8 +34,7 @@ struct DemoKeyboardView: View {
         VStack(spacing: 0) {
             // ✨ شريط أدوات AI في الأعلى
             if showAIToolbar && !isToolbarToggled {
-                AIToolbar()
-                    .environmentObject(state.keyboardContext)
+                AIToolbar(keyboardContext: keyboardContext)
             }
             
             // لوحة المفاتيح الأصلية

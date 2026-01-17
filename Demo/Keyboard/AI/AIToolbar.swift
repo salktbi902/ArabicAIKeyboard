@@ -2,7 +2,7 @@
 //  AIToolbar.swift
 //  Arabic AI Keyboard
 //
-//  ✨ شريط أدوات الذكاء الاصطناعي
+//  ✨ شريط أدوات الذكاء الاصطناعي - نسخة مبسطة
 //
 
 import SwiftUI
@@ -11,29 +11,62 @@ import KeyboardKit
 /// شريط أدوات AI للكيبورد
 struct AIToolbar: View {
     
-    @EnvironmentObject var keyboardContext: KeyboardContext
+    var keyboardContext: KeyboardContext
     @StateObject private var geminiService = GeminiService.shared
     @State private var processingCommand: AICommand?
+    @State private var showAllCommands = false
     
     var body: some View {
-        HStack(spacing: 8) {
-            // الأوامر السريعة
-            quickButton(.proofread)
-            quickButton(.translate)
-            quickButton(.diacritics)
-            quickButton(.improve)
+        VStack(spacing: 0) {
+            // الصف الأول - الأوامر الأساسية
+            HStack(spacing: 6) {
+                quickButton(.proofread)
+                quickButton(.translate)
+                quickButton(.diacritics)
+                quickButton(.improve)
+                
+                Spacer()
+                
+                // زر المزيد
+                Button {
+                    withAnimation(.spring(response: 0.3)) {
+                        showAllCommands.toggle()
+                    }
+                } label: {
+                    Image(systemName: showAllCommands ? "chevron.up" : "chevron.down")
+                        .font(.system(size: 14, weight: .bold))
+                        .frame(width: 36, height: 36)
+                        .background(Color.secondary.opacity(0.2))
+                        .foregroundColor(.primary)
+                        .cornerRadius(8)
+                }
+                
+                // مؤشر المعالجة
+                if geminiService.isProcessing {
+                    ProgressView()
+                        .scaleEffect(0.7)
+                        .frame(width: 30)
+                }
+            }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
             
-            Spacer()
-            
-            // مؤشر المعالجة
-            if geminiService.isProcessing {
-                ProgressView()
-                    .scaleEffect(0.8)
+            // الصف الثاني - أوامر إضافية
+            if showAllCommands {
+                HStack(spacing: 6) {
+                    quickButton(.summarize)
+                    quickButton(.expand)
+                    quickButton(.formal)
+                    quickButton(.casual)
+                    quickButton(.reply)
+                    quickButton(.complete)
+                }
+                .padding(.horizontal, 8)
+                .padding(.bottom, 4)
+                .transition(.move(edge: .top).combined(with: .opacity))
             }
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 6)
-        .background(Color.secondary.opacity(0.1))
+        .background(Color(UIColor.secondarySystemBackground))
     }
     
     /// زر سريع
@@ -41,16 +74,16 @@ struct AIToolbar: View {
         Button {
             executeCommand(command)
         } label: {
-            VStack(spacing: 2) {
+            VStack(spacing: 1) {
                 Image(systemName: command.icon)
-                    .font(.system(size: 16, weight: .medium))
+                    .font(.system(size: 14, weight: .medium))
                 Text(command.titleAr)
-                    .font(.system(size: 10))
+                    .font(.system(size: 9, weight: .medium))
             }
-            .frame(width: 50, height: 40)
+            .frame(width: 44, height: 36)
             .background(buttonColor(command).opacity(0.15))
             .foregroundColor(buttonColor(command))
-            .cornerRadius(8)
+            .cornerRadius(6)
         }
         .disabled(processingCommand != nil)
         .opacity(processingCommand == command ? 0.5 : 1.0)
@@ -63,6 +96,12 @@ struct AIToolbar: View {
         case "green": return .green
         case "purple": return .purple
         case "orange": return .orange
+        case "indigo": return .indigo
+        case "teal": return .teal
+        case "gray": return .gray
+        case "pink": return .pink
+        case "cyan": return .cyan
+        case "mint": return .mint
         default: return .blue
         }
     }
@@ -76,7 +115,7 @@ struct AIToolbar: View {
         if let selected = proxy.selectedText, !selected.isEmpty {
             text = selected
         } else if let before = proxy.documentContextBeforeInput {
-            // أخذ آخر جملة
+            // أخذ آخر جملة أو كل النص
             let separators = CharacterSet(charactersIn: ".!?؟。\n")
             let sentences = before.components(separatedBy: separators)
             if let last = sentences.last?.trimmingCharacters(in: .whitespaces), !last.isEmpty {
@@ -86,11 +125,16 @@ struct AIToolbar: View {
             }
         }
         
-        guard !text.isEmpty else { return }
+        guard !text.isEmpty else {
+            // اهتزاز خطأ
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.error)
+            return
+        }
         
         processingCommand = command
         
-        // اهتزاز
+        // اهتزاز بداية
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
         
@@ -115,6 +159,12 @@ struct AIToolbar: View {
                     let successGenerator = UINotificationFeedbackGenerator()
                     successGenerator.notificationOccurred(.success)
                 }
+            } else {
+                // اهتزاز فشل
+                await MainActor.run {
+                    let errorGenerator = UINotificationFeedbackGenerator()
+                    errorGenerator.notificationOccurred(.error)
+                }
             }
             
             await MainActor.run {
@@ -122,9 +172,4 @@ struct AIToolbar: View {
             }
         }
     }
-}
-
-#Preview {
-    AIToolbar()
-        .background(Color.gray.opacity(0.2))
 }
