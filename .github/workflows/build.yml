@@ -2,28 +2,48 @@ name: Build iOS App
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+      branches: [ main ]
+        workflow_dispatch:
 
-jobs:
-  build:
-    runs-on: macos-14
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_15.2.app/Contents/Developer
-      - name: Build
-        run: |
-          cd Demo
-          xcodebuild build -scheme Demo -destination 'generic/platform=iOS' CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
-      - name: Create IPA
-        run: |
-          mkdir Payload
-          cp -R ~/Library/Developer/Xcode/DerivedData/*/Build/Products/Release-iphoneos/*.app Payload/ || true
-          zip -r ArabicAIKeyboard.ipa Payload
-      - name: Upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: ArabicAIKeyboard-IPA
-          path: "*.ipa"
+        jobs:
+          build:
+              runs-on: macos-14
+                  steps:
+                        - name: Checkout
+                                uses: actions/checkout@v4
+
+                                            - name: Select Xcode 16
+                                                    run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+
+                                                                - name: Show Xcode version
+                                                                        run: xcodebuild -version
+
+                                                                                    - name: Build App
+                                                                                            run: |
+                                                                                                      cd Demo
+                                                                                                                xcodebuild build \
+                                                                                                                            -scheme Demo \
+                                                                                                                                        -destination 'generic/platform=iOS' \
+                                                                                                                                                    -configuration Release \
+                                                                                                                                                                CODE_SIGN_IDENTITY="" \
+                                                                                                                                                                            CODE_SIGNING_REQUIRED=NO \
+                                                                                                                                                                                        CODE_SIGNING_ALLOWED=NO \
+                                                                                                                                                                                                    DEVELOPMENT_TEAM=""
+                                                                                                                                                                                                          
+                                                                                                                                                                                                                - name: Create IPA
+                                                                                                                                                                                                                        run: |
+                                                                                                                                                                                                                                  mkdir -p Payload
+                                                                                                                                                                                                                                            APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -name "Demo.app" -type d | head -1)
+                                                                                                                                                                                                                                                      if [ -n "$APP_PATH" ]; then
+                                                                                                                                                                                                                                                                  cp -R "$APP_PATH" Payload/
+                                                                                                                                                                                                                                                                              zip -r ArabicAIKeyboard.ipa Payload
+                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                    echo "App not found"
+                                                                                                                                                                                                                                                                                                                exit 1
+                                                                                                                                                                                                                                                                                                                          fi
+                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                      - name: Upload IPA
+                                                                                                                                                                                                                                                                                                                                              uses: actions/upload-artifact@v4
+                                                                                                                                                                                                                                                                                                                                                      with:
+                                                                                                                                                                                                                                                                                                                                                                name: ArabicAIKeyboard-IPA
+                                                                                                                                                                                                                                                                                                                                                                          path: "*.ipa"
