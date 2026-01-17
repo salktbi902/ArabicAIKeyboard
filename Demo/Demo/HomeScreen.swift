@@ -107,14 +107,6 @@ struct HomeScreen: View {
             appIconSize: 120,
             appIconCornerRadius: 27
         ))
-        .keyboardAppHomeScreenVisibility(.init(
-            settingsSectionFonts: true,
-            settingsSectionThemes: true,
-            settingsSectionExperiments: true
-        ))
-        .keyboardDictation(
-            speechRecognizer: .standard
-        )
         .navigationViewStyle(.stack)
     }
 }
