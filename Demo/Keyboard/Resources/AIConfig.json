@@ -1,0 +1,106 @@
+{
+  "version": "1.0.0",
+  "name": "Arabic AI Keyboard",
+  "description": "لوحة مفاتيح عربية ذكية مدعومة بالذكاء الاصطناعي",
+  
+  "api": {
+    "provider": "google",
+    "model": "gemini-1.5-flash",
+    "baseURL": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
+    "timeout": 30,
+    "maxTokens": 1024,
+    "temperature": 0.7
+  },
+  
+  "commands": {
+    "proofread": {
+      "id": "proofread",
+      "titleAr": "تدقيق",
+      "titleEn": "Proofread",
+      "icon": "eye",
+      "color": "#007AFF",
+      "prompt": "أنت مدقق لغوي عربي محترف. صحح الأخطاء الإملائية والنحوية في النص التالي. أعد النص المصحح فقط بدون أي شرح أو تعليق."
+    },
+    "translate": {
+      "id": "translate",
+      "titleAr": "ترجمة",
+      "titleEn": "Translate",
+      "icon": "globe",
+      "color": "#34C759",
+      "prompt": "أنت مترجم محترف. إذا كان النص بالعربية، ترجمه للإنجليزية. إذا كان بالإنجليزية، ترجمه للعربية. أعد الترجمة فقط بدون أي شرح."
+    },
+    "diacritics": {
+      "id": "diacritics",
+      "titleAr": "تشكيل",
+      "titleEn": "Diacritics",
+      "icon": "textformat",
+      "color": "#AF52DE",
+      "prompt": "أنت خبير في اللغة العربية. أضف التشكيل الكامل (الحركات) للنص العربي التالي. أعد النص مع التشكيل فقط."
+    },
+    "improve": {
+      "id": "improve",
+      "titleAr": "تحسين",
+      "titleEn": "Improve",
+      "icon": "wand.and.stars",
+      "color": "#FF9500",
+      "prompt": "أنت كاتب محترف. حسّن أسلوب النص التالي ليكون أكثر وضوحاً وجمالاً. أعد النص المحسّن فقط."
+    },
+    "summarize": {
+      "id": "summarize",
+      "titleAr": "تلخيص",
+      "titleEn": "Summarize",
+      "icon": "doc.text",
+      "color": "#5856D6",
+      "prompt": "لخّص النص التالي في جملة أو جملتين مع الحفاظ على المعنى الأساسي. أعد الملخص فقط."
+    },
+    "expand": {
+      "id": "expand",
+      "titleAr": "توسيع",
+      "titleEn": "Expand",
+      "icon": "arrow.up.left.and.arrow.down.right",
+      "color": "#00C7BE",
+      "prompt": "وسّع النص التالي بإضافة تفاصيل ومعلومات إضافية مع الحفاظ على الموضوع. أعد النص الموسّع فقط."
+    },
+    "formal": {
+      "id": "formal",
+      "titleAr": "رسمي",
+      "titleEn": "Formal",
+      "icon": "briefcase",
+      "color": "#8E8E93",
+      "prompt": "حوّل النص التالي إلى أسلوب رسمي مناسب للمراسلات الرسمية والأعمال. أعد النص الرسمي فقط."
+    },
+    "casual": {
+      "id": "casual",
+      "titleAr": "عامي",
+      "titleEn": "Casual",
+      "icon": "face.smiling",
+      "color": "#FF2D55",
+      "prompt": "حوّل النص التالي إلى أسلوب ودي وغير رسمي مناسب للمحادثات اليومية. أعد النص العامي فقط."
+    },
+    "reply": {
+      "id": "reply",
+      "titleAr": "رد",
+      "titleEn": "Reply",
+      "icon": "arrowshape.turn.up.left",
+      "color": "#32ADE6",
+      "prompt": "اقترح رداً مناسباً على الرسالة التالية. الرد يجب أن يكون مهذباً ومناسباً للسياق. أعد الرد المقترح فقط."
+    },
+    "complete": {
+      "id": "complete",
+      "titleAr": "إكمال",
+      "titleEn": "Complete",
+      "icon": "text.badge.plus",
+      "color": "#00C853",
+      "prompt": "أكمل النص التالي بطريقة منطقية ومناسبة للسياق. أعد النص المكتمل فقط."
+    }
+  },
+  
+  "settings": {
+    "defaultLocale": "ar",
+    "supportedLocales": ["ar", "ar_SA", "ar_AE", "ar_EG", "en", "fr", "tr", "ur", "fa"],
+    "hapticFeedback": true,
+    "soundFeedback": true,
+    "spacebarCursorMove": true,
+    "showAIToolbar": true
+  }
+}

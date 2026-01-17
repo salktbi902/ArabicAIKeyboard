@@ -48,6 +48,40 @@
 
 ---
 
+## 🚀 طرق التثبيت
+
+### الطريقة 1: GitHub Actions (بدون Mac) ⭐ الأسهل
+
+1. **Fork المستودع** على GitHub
+2. اذهب إلى **Actions** > **Build iOS App**
+3. اضغط **Run workflow**
+4. انتظر انتهاء البناء (5-10 دقائق)
+5. حمّل ملف **IPA** من **Artifacts**
+6. ثبّت باستخدام:
+   - **TrollStore** (الأفضل - بدون توقيع)
+   - **Scarlet**
+   - **SideStore**
+   - **AltStore**
+
+### الطريقة 2: Xcode (Mac)
+
+```bash
+git clone https://github.com/salktbi902/ArabicAIKeyboard.git
+cd ArabicAIKeyboard/Demo
+open Demo.xcodeproj
+```
+
+ثم اضغط `Cmd + R` للبناء والتشغيل.
+
+### الطريقة 3: Swift Playgrounds (iPad)
+
+1. افتح **Working Copy** على iPad
+2. Clone المستودع
+3. افتح في **Swift Playgrounds**
+4. اضغط **Run**
+
+---
+
 ## 📦 الملفات المضافة/المعدلة
 
 ### ملفات جديدة (AI)
