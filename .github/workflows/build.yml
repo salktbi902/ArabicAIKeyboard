@@ -2,28 +2,28 @@ name: Build iOS App
 
 on:
   push:
-      branches: [ main ]
-        workflow_dispatch:
+    branches: [ main ]
+  workflow_dispatch:
 
-        jobs:
-          build:
-              runs-on: macos-14
-                  steps:
-                        - name: Checkout
-                                uses: actions/checkout@v4
-                                      - name: Select Xcode
-                                              run: sudo xcode-select -s /Applications/Xcode_15.2.app/Contents/Developer
-                                                    - name: Build
-                                                            run: |
-                                                                      cd Demo
-                                                                                xcodebuild build -scheme Demo -destination 'generic/platform=iOS' CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
-                                                                                      - name: Create IPA
-                                                                                              run: |
-                                                                                                        mkdir Payload
-                                                                                                                  cp -R ~/Library/Developer/Xcode/DerivedData/*/Build/Products/Release-iphoneos/*.app Payload/ || true
-                                                                                                                            zip -r ArabicAIKeyboard.ipa Payload
-                                                                                                                                  - name: Upload
-                                                                                                                                          uses: actions/upload-artifact@v4
-                                                                                                                                                  with:
-                                                                                                                                                            name: ArabicAIKeyboard-IPA
-                                                                                                                                                                      path: "*.ipa"
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_15.2.app/Contents/Developer
+      - name: Build
+        run: |
+          cd Demo
+          xcodebuild build -scheme Demo -destination 'generic/platform=iOS' CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+      - name: Create IPA
+        run: |
+          mkdir Payload
+          cp -R ~/Library/Developer/Xcode/DerivedData/*/Build/Products/Release-iphoneos/*.app Payload/ || true
+          zip -r ArabicAIKeyboard.ipa Payload
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: ArabicAIKeyboard-IPA
+          path: "*.ipa"
