@@ -113,8 +113,8 @@ struct AIMenu: View {
     // MARK: - Actions
     
     private func executeCommand(_ command: AICommand) {
-        guard let proxy = keyboardContext.textDocumentProxy,
-              let text = getCurrentText(from: proxy),
+        let proxy = keyboardContext.textDocumentProxy
+        guard let text = getCurrentText(from: proxy),
               !text.isEmpty else {
             return
         }
@@ -154,7 +154,7 @@ struct AIMenu: View {
     }
     
     private func insertResult() {
-        guard let proxy = keyboardContext.textDocumentProxy else { return }
+        let proxy = keyboardContext.textDocumentProxy
         
         // حذف النص القديم
         if let before = proxy.documentContextBeforeInput {

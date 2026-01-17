@@ -18,10 +18,6 @@ class KeyboardViewController: KeyboardInputViewController {
     }
 
     override func viewDidLoad() {
-        /// تفعيل الميزات التجريبية
-        Experiment.keyboardDictation.setIsEnabled(true)
-        Experiment.layoutCaching.setIsEnabled(true)
-
         super.viewDidLoad()
 
         /// إعداد الكيبورد مع تطبيق Demo
@@ -67,8 +63,6 @@ private extension KeyboardViewController {
         
         let feedback = state.feedbackContext
         feedback.registerCustomFeedback(.haptic(.selectionChanged, for: .repeat, on: .rocket))
-        feedback.isHapticFeedbackEnabled = true
-        feedback.isAudioFeedbackEnabled = true
     }
     
     /// ✨ إعداد اللغة العربية كلغة أساسية
@@ -80,7 +74,7 @@ private extension KeyboardViewController {
         }
         
         state.keyboardContext.localePresentationLocale = arabicLocale
-        state.keyboardContext.keyboardType = .alphabetic(.lowercased)
+        state.keyboardContext.keyboardType = .alphabetic
         
         NSLog("✅ Arabic locale configured successfully")
     }

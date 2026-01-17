@@ -225,7 +225,7 @@ extension DemoKeyboardMenu {
     
     /// تنفيذ أمر AI
     func executeAICommand(_ command: AICommand) {
-        guard let proxy = keyboardContext.textDocumentProxy else { return }
+        let proxy = keyboardContext.textDocumentProxy
         
         // الحصول على النص
         var text = ""
