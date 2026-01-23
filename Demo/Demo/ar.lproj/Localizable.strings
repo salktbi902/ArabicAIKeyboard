@@ -1,0 +1,94 @@
+/* 
+  Localizable.strings (Arabic)
+  Arabic AI Keyboard - Main App
+  
+  الترجمة العربية للتطبيق الرئيسي
+  تم التحديث: يناير 2026
+*/
+
+// MARK: - الشاشة الرئيسية
+"Home.Title" = "لوحة المفاتيح العربية الذكية";
+"Home.Subtitle" = "مدعومة بالذكاء الاصطناعي";
+"Home.GetStarted" = "ابدأ الآن";
+"Home.Settings" = "الإعدادات";
+"Home.Help" = "المساعدة";
+
+// MARK: - التعليمات
+"Setup.Title" = "إعداد لوحة المفاتيح";
+"Setup.Step1" = "افتح الإعدادات";
+"Setup.Step2" = "اذهب إلى عام > لوحة المفاتيح";
+"Setup.Step3" = "اضغط على لوحات المفاتيح";
+"Setup.Step4" = "أضف لوحة مفاتيح جديدة";
+"Setup.Step5" = "اختر لوحة المفاتيح العربية الذكية";
+"Setup.Step6" = "فعّل السماح بالوصول الكامل";
+"Setup.OpenSettings" = "فتح الإعدادات";
+"Setup.Done" = "تم الإعداد";
+
+// MARK: - الميزات
+"Features.Title" = "الميزات";
+"Features.AI" = "ذكاء اصطناعي متقدم";
+"Features.AI.Description" = "تدقيق، ترجمة، تشكيل، وأكثر";
+"Features.Arabic" = "دعم كامل للعربية";
+"Features.Arabic.Description" = "تخطيط عربي محسّن";
+"Features.Themes" = "سمات متعددة";
+"Features.Themes.Description" = "خصص مظهر لوحة المفاتيح";
+"Features.Dictation" = "إملاء صوتي";
+"Features.Dictation.Description" = "تحويل الكلام إلى نص";
+
+// MARK: - الإعدادات
+"Settings.Title" = "الإعدادات";
+"Settings.General" = "عام";
+"Settings.Keyboard" = "لوحة المفاتيح";
+"Settings.AI" = "الذكاء الاصطناعي";
+"Settings.Appearance" = "المظهر";
+"Settings.Sound" = "الصوت والاهتزاز";
+"Settings.Privacy" = "الخصوصية";
+"Settings.About" = "حول التطبيق";
+
+// MARK: - إعدادات الذكاء الاصطناعي
+"AI.Settings.Title" = "إعدادات الذكاء الاصطناعي";
+"AI.Settings.Enable" = "تفعيل الذكاء الاصطناعي";
+"AI.Settings.APIKey" = "مفتاح API";
+"AI.Settings.Model" = "النموذج";
+"AI.Settings.Language" = "لغة الاستجابة";
+"AI.Settings.AutoCorrect" = "التصحيح التلقائي بالذكاء الاصطناعي";
+"AI.Settings.Suggestions" = "اقتراحات ذكية";
+
+// MARK: - حقول النص
+"TextField.Email" = "البريد الإلكتروني...";
+"TextField.Multiline" = "نص متعدد الأسطر...";
+"TextField.NumberPad" = "لوحة الأرقام";
+"TextField.Plain" = "نص عادي...";
+"TextField.URL" = "رابط...";
+"TextField.WebSearch" = "بحث في الويب...";
+
+// MARK: - الأقسام
+"Section.TextFields" = "حقول النص";
+"Section.TestKeyboard" = "اختبار لوحة المفاتيح";
+
+// MARK: - الأوراق
+"Sheet.FullDocumentContext" = "قارئ المستند الكامل";
+"Sheet.FullDocumentContext.Reading" = "جارٍ القراءة...";
+"Sheet.FullDocumentContext.ResultPrefix" = "النتيجة: ";
+"Sheet.Host" = "التطبيق المضيف";
+"Sheet.Host.Section.App" = "التطبيق المضيف";
+"Sheet.Host.Section.App.BundleId" = "معرّف الحزمة";
+"Sheet.Host.Section.App.CanOpen" = "هل يمكن فتحه؟";
+"Sheet.Host.Section.App.Name" = "الاسم";
+"Sheet.Host.Section.App.Unknown" = "التطبيق المضيف الحالي غير معروف. تواصل معنا لإضافته.";
+"Sheet.Host.Section.BundleID" = "معرّف حزمة التطبيق المضيف";
+"Sheet.Host.Section.KnownApps" = "التطبيقات المعروفة";
+
+// MARK: - التنبيهات
+"OBS! This demo isn't code signed and therefore can't sync data with its keyboard. This means that dictation will not work." = "تنبيه: هذا العرض التجريبي غير موقّع رقمياً ولا يمكنه مزامنة البيانات مع لوحة المفاتيح. هذا يعني أن الإملاء الصوتي لن يعمل.";
+
+// MARK: - الأزرار
+"Button.Done" = "تم";
+"Button.Cancel" = "إلغاء";
+"Button.Save" = "حفظ";
+"Button.Delete" = "حذف";
+"Button.Edit" = "تعديل";
+"Button.Close" = "إغلاق";
+"Button.OK" = "موافق";
+"Button.Yes" = "نعم";
+"Button.No" = "لا";

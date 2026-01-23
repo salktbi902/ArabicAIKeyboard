@@ -2,56 +2,78 @@
   Localizable.strings (Arabic)
   Arabic AI Keyboard
   
-  الترجمة العربية لواجهة لوحة المفاتيح
+  الترجمة العربية الكاملة لواجهة لوحة المفاتيح
+  تم التحديث: يناير 2026
 */
 
-// MARK: - Menu Items
+// MARK: - عناصر القائمة الرئيسية
 "Menu.Settings" = "الإعدادات";
 "Menu.Languages" = "اللغات";
 "Menu.Themes" = "السمات";
-"Menu.Dictation" = "الإملاء";
+"Menu.Dictation" = "الإملاء الصوتي";
 "Menu.TextInput" = "إدخال نص";
-"Menu.ReadFullDocument" = "قراءة المستند";
-"Menu.HostApp" = "التطبيق المضيف";
+"Menu.ReadFullDocument" = "قراءة النص الكامل";
+"Menu.HostApp" = "معلومات التطبيق";
 "Menu.OpenApp" = "فتح التطبيق";
 "Menu.OpenWebsite" = "فتح الموقع";
-"Menu.CloseMenu" = "إغلاق القائمة";
+"Menu.CloseMenu" = "إغلاق";
+"Menu.AI" = "الذكاء الاصطناعي";
 
-// MARK: - AI Commands
+// MARK: - أوامر الذكاء الاصطناعي
 "AI.Title" = "الذكاء الاصطناعي";
-"AI.Proofread" = "تدقيق";
+"AI.Subtitle" = "اختر أمراً لمعالجة النص";
+"AI.Proofread" = "تدقيق لغوي";
 "AI.Translate" = "ترجمة";
 "AI.Diacritics" = "تشكيل";
-"AI.Improve" = "تحسين";
+"AI.Improve" = "تحسين النص";
 "AI.Summarize" = "تلخيص";
 "AI.Expand" = "توسيع";
-"AI.Formal" = "رسمي";
-"AI.Casual" = "عامي";
+"AI.Formal" = "أسلوب رسمي";
+"AI.Casual" = "أسلوب عامي";
 "AI.Reply" = "رد ذكي";
-"AI.Complete" = "إكمال";
+"AI.Complete" = "إكمال تلقائي";
 
-// MARK: - AI Status
+// MARK: - حالة الذكاء الاصطناعي
 "AI.Processing" = "جارٍ المعالجة...";
 "AI.Success" = "تم بنجاح";
 "AI.Error" = "حدث خطأ";
 "AI.EmptyText" = "النص فارغ";
+"AI.NoConnection" = "لا يوجد اتصال بالإنترنت";
+"AI.Result" = "النتيجة:";
 
-// MARK: - Buttons
+// MARK: - الأزرار
 "Button.Done" = "تم";
 "Button.Cancel" = "إلغاء";
 "Button.Copy" = "نسخ";
 "Button.Insert" = "إدراج";
 "Button.Retry" = "إعادة المحاولة";
+"Button.Close" = "إغلاق";
+"Button.Save" = "حفظ";
+"Button.Delete" = "حذف";
+"Button.Edit" = "تعديل";
+"Button.Share" = "مشاركة";
+"Button.Send" = "إرسال";
+"Button.Apply" = "تطبيق";
+"Button.Reset" = "إعادة تعيين";
 
-// MARK: - Settings
+// MARK: - الإعدادات
 "Settings.Title" = "إعدادات لوحة المفاتيح";
 "Settings.Language" = "اللغة";
 "Settings.Theme" = "السمة";
 "Settings.Haptics" = "الاهتزاز";
 "Settings.Sound" = "الصوت";
 "Settings.AI" = "الذكاء الاصطناعي";
+"Settings.Keyboard" = "لوحة المفاتيح";
+"Settings.Autocomplete" = "الإكمال التلقائي";
+"Settings.Autocorrect" = "التصحيح التلقائي";
+"Settings.KeyboardSize" = "حجم لوحة المفاتيح";
+"Settings.KeyboardLayout" = "تخطيط لوحة المفاتيح";
+"Settings.Appearance" = "المظهر";
+"Settings.LightMode" = "الوضع الفاتح";
+"Settings.DarkMode" = "الوضع الداكن";
+"Settings.SystemMode" = "تلقائي (حسب النظام)";
 
-// MARK: - Keyboard
+// MARK: - لوحة المفاتيح
 "Keyboard.Space" = "مسافة";
 "Keyboard.Return" = "إدخال";
 "Keyboard.Delete" = "حذف";
@@ -59,3 +81,87 @@
 "Keyboard.Numbers" = "أرقام";
 "Keyboard.Symbols" = "رموز";
 "Keyboard.Letters" = "حروف";
+"Keyboard.Emoji" = "إيموجي";
+"Keyboard.Globe" = "تبديل اللغة";
+"Keyboard.Dictation" = "إملاء صوتي";
+"Keyboard.Dismiss" = "إخفاء لوحة المفاتيح";
+
+// MARK: - اللغات
+"Language.Arabic" = "العربية";
+"Language.English" = "الإنجليزية";
+"Language.French" = "الفرنسية";
+"Language.Spanish" = "الإسبانية";
+"Language.German" = "الألمانية";
+"Language.Turkish" = "التركية";
+"Language.Urdu" = "الأردية";
+"Language.Persian" = "الفارسية";
+
+// MARK: - السمات
+"Theme.Default" = "الافتراضي";
+"Theme.Dark" = "داكن";
+"Theme.Light" = "فاتح";
+"Theme.Blue" = "أزرق";
+"Theme.Green" = "أخضر";
+"Theme.Purple" = "بنفسجي";
+"Theme.Custom" = "مخصص";
+
+// MARK: - الإملاء الصوتي
+"Dictation.Start" = "ابدأ التحدث";
+"Dictation.Stop" = "إيقاف";
+"Dictation.Listening" = "جارٍ الاستماع...";
+"Dictation.Processing" = "جارٍ المعالجة...";
+"Dictation.Error" = "حدث خطأ في التعرف على الصوت";
+"Dictation.NoPermission" = "لا يوجد إذن للميكروفون";
+
+// MARK: - حقول النص
+"TextField.Email" = "البريد الإلكتروني...";
+"TextField.Multiline" = "نص متعدد الأسطر...";
+"TextField.NumberPad" = "لوحة الأرقام";
+"TextField.Plain" = "نص عادي...";
+"TextField.URL" = "رابط...";
+"TextField.WebSearch" = "بحث في الويب...";
+"TextField.Password" = "كلمة المرور...";
+"TextField.Phone" = "رقم الهاتف...";
+
+// MARK: - الأوراق والنوافذ
+"Sheet.FullDocumentContext" = "قارئ المستند الكامل";
+"Sheet.FullDocumentContext.Reading" = "جارٍ القراءة...";
+"Sheet.FullDocumentContext.ResultPrefix" = "النتيجة: ";
+"Sheet.Host" = "التطبيق المضيف";
+"Sheet.Host.Section.App" = "التطبيق المضيف";
+"Sheet.Host.Section.App.BundleId" = "معرّف الحزمة";
+"Sheet.Host.Section.App.CanOpen" = "هل يمكن فتحه؟";
+"Sheet.Host.Section.App.Name" = "الاسم";
+"Sheet.Host.Section.App.Unknown" = "التطبيق المضيف الحالي غير معروف. تواصل معنا لإضافته.";
+"Sheet.Host.Section.BundleID" = "معرّف حزمة التطبيق المضيف";
+"Sheet.Host.Section.KnownApps" = "التطبيقات المعروفة";
+
+// MARK: - الأقسام
+"Section.TextFields" = "حقول النص";
+"Section.Settings" = "الإعدادات";
+"Section.AI" = "الذكاء الاصطناعي";
+"Section.Languages" = "اللغات";
+"Section.Themes" = "السمات";
+"Section.About" = "حول التطبيق";
+
+// MARK: - الرسائل والتنبيهات
+"Alert.Error" = "خطأ";
+"Alert.Success" = "نجاح";
+"Alert.Warning" = "تحذير";
+"Alert.Info" = "معلومات";
+"Alert.Confirm" = "تأكيد";
+"Alert.AreYouSure" = "هل أنت متأكد؟";
+
+// MARK: - حول التطبيق
+"About.Title" = "لوحة المفاتيح العربية الذكية";
+"About.Version" = "الإصدار";
+"About.Developer" = "المطور";
+"About.Website" = "الموقع الإلكتروني";
+"About.Support" = "الدعم الفني";
+"About.Privacy" = "سياسة الخصوصية";
+"About.Terms" = "شروط الاستخدام";
+"About.RateApp" = "قيّم التطبيق";
+"About.ShareApp" = "شارك التطبيق";
+
+// MARK: - التنبيهات
+"OBS! This demo isn't code signed and therefore can't sync data with its keyboard. This means that dictation will not work." = "تنبيه: هذا العرض التجريبي غير موقّع رقمياً ولا يمكنه مزامنة البيانات مع لوحة المفاتيح. هذا يعني أن الإملاء الصوتي لن يعمل.";
