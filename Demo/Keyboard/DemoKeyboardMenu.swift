@@ -36,8 +36,11 @@ struct DemoKeyboardMenu: View {
     
     @State private var showAIMenu = false
     @State private var showSmartReplySheet = false
+    @State private var showCodeToolsMenu = false
+    @State private var showProgrammerKeyboard = false
     @StateObject private var geminiService = GeminiService.shared
     @StateObject private var smartReplyService = SmartReplyService.shared
+    @StateObject private var codeService = CodeService.shared
     @State private var processingCommand: AICommand?
 
     var body: some View {
@@ -61,6 +64,14 @@ struct DemoKeyboardMenu: View {
             SmartReplySheet(isPresented: $showSmartReplySheet)
                 .presentationDetents([.medium, .large])
         }
+        .sheet(isPresented: $showCodeToolsMenu) {
+            CodeToolsMenu(isPresented: $showCodeToolsMenu)
+                .presentationDetents([.medium, .large])
+        }
+        .sheet(isPresented: $showProgrammerKeyboard) {
+            ProgrammerKeyboardSheet(isPresented: $showProgrammerKeyboard)
+                .presentationDetents([.medium])
+        }
     }
 }
 
@@ -71,6 +82,9 @@ extension DemoKeyboardMenu {
         
         // ⭐ قسم الذكاء الاصطناعي - جديد
         aiSection
+        
+        // 💻 قسم أدوات البرمجة - جديد
+        codeSection
         
         // القائمة الأصلية
         menuItem(
@@ -168,6 +182,171 @@ extension DemoKeyboardMenu {
         aiCommandItem(.translate)
         aiCommandItem(.diacritics)
         aiCommandItem(.improve)
+    }
+    
+    // MARK: - Code Section
+    
+    /// قسم أدوات البرمجة
+    @ViewBuilder
+    var codeSection: some View {
+        // زر فتح قائمة أدوات البرمجة
+        codeMenuItem(
+            title: "💻 أدوات البرمجة",
+            icon: .init(systemName: "chevron.left.forwardslash.chevron.right"),
+            tint: .indigo,
+            action: { showCodeToolsMenu = true }
+        )
+        
+        // زر لوحة المفاتيح البرمجية
+        codeMenuItem(
+            title: "⌨️ رموز برمجية",
+            icon: .init(systemName: "curlybraces"),
+            tint: .teal,
+            action: { showProgrammerKeyboard = true }
+        )
+        
+        // أوامر الكود السريعة
+        codeCommandItem(.explain)
+        codeCommandItem(.fix)
+        codeCommandItem(.generate)
+    }
+    
+    /// عنصر قائمة البرمجة
+    func codeMenuItem(
+        title: String,
+        icon: Image,
+        tint: Color,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button {
+            withAnimation {
+                isToolbarToggled.toggle()
+                action()
+            }
+        } label: {
+            VStack(alignment: .center, spacing: 10) {
+                menuItemIcon(.keyboardSettings)
+                    .opacity(0)
+                    .overlay(menuItemIcon(icon))
+                    .font(.title)
+                    .foregroundStyle(tint)
+                Text(title)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .lineLimit(1)
+            }
+            .padding(5)
+            .font(.footnote)
+        }
+        .symbolVariant(.fill)
+        .symbolRenderingMode(.multicolor)
+        .buttonStyle(.bordered)
+        .tint(tint.gradient)
+        .background(Color.primary.colorInvert())
+        .modify { content in
+            if #available(iOS 26, *) {
+                content.clipShape(.capsule)
+            } else {
+                content.clipShape(.rect(cornerRadius: 20))
+            }
+        }
+        .shadow(color: .black.opacity(0.3), radius: 0, x: 0, y: 1)
+    }
+    
+    /// عنصر أمر كود
+    func codeCommandItem(_ command: CodeCommand) -> some View {
+        Button {
+            withAnimation {
+                isToolbarToggled.toggle()
+                executeCodeCommand(command)
+            }
+        } label: {
+            VStack(alignment: .center, spacing: 10) {
+                ZStack {
+                    if codeService.isProcessing {
+                        ProgressView()
+                            .scaleEffect(0.8)
+                    } else {
+                        Image(systemName: command.icon)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 25)
+                    }
+                }
+                .frame(height: 25)
+                
+                Text(command.titleAr)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .lineLimit(1)
+            }
+            .padding(5)
+            .font(.footnote)
+        }
+        .disabled(codeService.isProcessing)
+        .symbolVariant(.fill)
+        .symbolRenderingMode(.multicolor)
+        .buttonStyle(.bordered)
+        .tint(codeCommandColor(command).gradient)
+        .background(Color.primary.colorInvert())
+        .modify { content in
+            if #available(iOS 26, *) {
+                content.clipShape(.capsule)
+            } else {
+                content.clipShape(.rect(cornerRadius: 20))
+            }
+        }
+        .shadow(color: .black.opacity(0.3), radius: 0, x: 0, y: 1)
+    }
+    
+    /// لون أمر الكود
+    func codeCommandColor(_ command: CodeCommand) -> Color {
+        switch command {
+        case .explain: return .blue
+        case .fix: return .red
+        case .format: return .green
+        case .convert: return .purple
+        case .generate: return .orange
+        case .complete: return .cyan
+        case .optimize: return .yellow
+        case .comment: return .gray
+        case .test: return .indigo
+        case .document: return .teal
+        }
+    }
+    
+    /// تنفيذ أمر كود
+    func executeCodeCommand(_ command: CodeCommand) {
+        let proxy = keyboardContext.textDocumentProxy
+        
+        // الحصول على النص
+        var text = ""
+        if let selected = proxy.selectedText, !selected.isEmpty {
+            text = selected
+        } else if let before = proxy.documentContextBeforeInput {
+            text = before
+        }
+        
+        guard !text.isEmpty else { return }
+        
+        Task {
+            var result: String?
+            
+            switch command {
+            case .explain:
+                result = await codeService.explainCode(text, language: .swift)
+            case .fix:
+                result = await codeService.fixCode(text, language: .swift)
+            case .generate:
+                result = await codeService.generateCode(description: text, language: .swift)
+            default:
+                break
+            }
+            
+            if let result = result {
+                await MainActor.run {
+                    proxy.insertText("\n\n" + result)
+                }
+            }
+        }
     }
     
     // MARK: - Smart Reply
