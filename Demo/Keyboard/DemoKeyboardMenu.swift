@@ -35,7 +35,9 @@ struct DemoKeyboardMenu: View {
     @EnvironmentObject var themeContext: KeyboardThemeContext
     
     @State private var showAIMenu = false
+    @State private var showSmartReplySheet = false
     @StateObject private var geminiService = GeminiService.shared
+    @StateObject private var smartReplyService = SmartReplyService.shared
     @State private var processingCommand: AICommand?
 
     var body: some View {
@@ -54,6 +56,10 @@ struct DemoKeyboardMenu: View {
                 isPresented: $showAIMenu
             )
             .presentationDetents([.medium, .large])
+        }
+        .sheet(isPresented: $showSmartReplySheet) {
+            SmartReplySheet(isPresented: $showSmartReplySheet)
+                .presentationDetents([.medium, .large])
         }
     }
 }
@@ -154,11 +160,61 @@ extension DemoKeyboardMenu {
             action: { showAIMenu = true }
         )
         
+        // ⭐ زر الردود الذكية - جديد
+        smartReplyMenuItem
+        
         // الأوامر السريعة
         aiCommandItem(.proofread)
         aiCommandItem(.translate)
         aiCommandItem(.diacritics)
         aiCommandItem(.improve)
+    }
+    
+    // MARK: - Smart Reply
+    
+    /// زر الردود الذكية
+    var smartReplyMenuItem: some View {
+        Button {
+            withAnimation {
+                isToolbarToggled.toggle()
+                showSmartReplySheet = true
+            }
+        } label: {
+            VStack(alignment: .center, spacing: 10) {
+                ZStack {
+                    if smartReplyService.isLoading {
+                        ProgressView()
+                            .scaleEffect(0.8)
+                    } else {
+                        Image(systemName: "bubble.left.and.bubble.right.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 25)
+                    }
+                }
+                .frame(height: 25)
+                
+                Text("ردود ذكية")
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .lineLimit(1)
+            }
+            .padding(5)
+            .font(.footnote)
+        }
+        .disabled(smartReplyService.isLoading)
+        .symbolVariant(.fill)
+        .symbolRenderingMode(.multicolor)
+        .buttonStyle(.bordered)
+        .tint(Color.cyan.gradient)
+        .background(Color.primary.colorInvert())
+        .modify { content in
+            if #available(iOS 26, *) {
+                content.clipShape(.capsule)
+            } else {
+                content.clipShape(.rect(cornerRadius: 20))
+            }
+        }
+        .shadow(color: .black.opacity(0.3), radius: 0, x: 0, y: 1)
     }
     
     /// عنصر أمر AI
